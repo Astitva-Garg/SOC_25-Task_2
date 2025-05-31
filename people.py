@@ -35,18 +35,22 @@ class Employee:
         else: self.salary = 10_000 
     
     def change_city(self, new_city:str) -> bool:
-        # Change the city 
-        # Return true if city change, successful, return false if city same as old city
+        if self.city != new_city: 
+            self.city = new_city
+            return True# Change the city 
+        return False# Return true if city change, successful, return false if city same as old city
         pass
 
     def migrate_branch(self, new_code:int) -> bool:
-        # Should work only on those employees who have a single 
+        if len(self.branches) !=1 : return False # Should work only on those employees who have a single 
         # branch to report to. Fail for others.
-        # Change old branch to new if it is in the same city, else return false.
+        if branchmap[self.branches[0]]["city"] != branchmap[newcode]["city"]: return False # Change old branch to new if it is in the same city, else return false.
+        self.branches = [new_code]
+        return True
         pass
 
     def increment(self, increment_amt: int) -> None:
-        # Increment salary by amount specified.
+        self.salary += increment_amt
         pass
 
 
@@ -55,26 +59,33 @@ class Employee:
 
 class Engineer(Employee):
     position : str # Position in organization Hierarchy
+    positions_list : list[str] # List of all available positions
+    
+    positions_list = ["Junior", "Senior", "Team Lead", "Director"]
 
     def __init__(self, name, age, ID, city,\
                  branchcodes, position= "Junior", salary = None):
         # Call the parent's constructor
         super().__init__(name, age, ID, city, branchcodes, salary)
         
-        # Check if position is one of  "Junior", "Senior", "Team Lead", or "Director" 
-        # Only then set the position. 
+        if position in self.positions_list: # Check if position is one of  "Junior", "Senior", "Team Lead", or "Director"
+            self.position = position # Only then set the position.
+        else:
+            raise ValueError("Invalid Position")
+         
 
     
     def increment(self, amt:int) -> None:
-        # While other functions are the same for and engineer,
+        super().increment(amt/10)# While other functions are the same for an engineer,
         # and increment to an engineer's salary should add a 10% bonus on to "amt"
         pass
         
     def promote(self, position:str) -> bool:
-        # Return false for a demotion or an invalid promotion
-        # Promotion can only be to a higher position and
-        # it should call the increment function with 30% of the present salary
-        # as "amt". Thereafter return True.
+        
+        if position not in self.positions_list: return False # Return false for a demotion or an invalid promotion
+        if positions_list.index(position)<=positions_list.index(self.position): return False# Promotion can only be to a higher position and
+        self.increment((3*super().salary)/10)# it should call the increment function with 30% of the present salary
+        return True# as "amt". Thereafter return True.
         pass
 
 
@@ -91,13 +102,36 @@ class Salesman(Employee):
     It should be None for a "Head" and so, the argument should be optional in init.
     """
     
-    # An extra member variable!
-    superior : int # EMPLOYEE ID of the superior this guy reports to
-
-    def __init__(self, ): # Complete all this! Add arguments
+    def increment(self, amt:int) -> None:
+        super().increment(amt/20)
+        #  increment to a Salesman's salary should add a 5% bonus on to "amt"
         pass
     
-    # def promote 
+    
+    # An extra member variable!
+    superior : int # EMPLOYEE ID of the superior this guy reports to
+    positions_list : list[str]
+
+    positions_list = ["Rep", "Manager", "Head"]
+    
+
+    def __init__(self, name, age, ID, city,\
+                 branchcodes, position= "Rep", salary = None, superior = None): # Call the parent's constructor
+        super().__init__(name, age, ID, city, branchcodes, salary)
+        
+        if position in self.positions_list: # Check if position is valid
+            self.position = position # Only then set the position.
+        else:
+            raise ValueError("Invalid Position")             
+        pass
+    
+    def promote(self, position:str) -> bool:
+        
+        if position not in self.positions_list: return False # Return false for a demotion or an invalid promotion
+        if positions_list.index(position)<=positions_list.index(self.position): return False# Promotion can only be to a higher position and
+        self.increment((3*super().salary)/10)# it should call the increment function with 30% of the present salary
+        return True# as "amt". Thereafter return True.
+        pass
 
     # def increment 
 
