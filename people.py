@@ -76,7 +76,7 @@ class Engineer(Employee):
 
     
     def increment(self, amt:int) -> None:
-        super().increment(amt/10)# While other functions are the same for an engineer,
+        super().increment(amt/10 + amt)# While other functions are the same for an engineer,
         # and increment to an engineer's salary should add a 10% bonus on to "amt"
         pass
         
@@ -103,7 +103,7 @@ class Salesman(Employee):
     """
     
     def increment(self, amt:int) -> None:
-        super().increment(amt/20)
+        super().increment(amt/20 + amt)
         #  increment to a Salesman's salary should add a 5% bonus on to "amt"
         pass
     
@@ -141,13 +141,18 @@ class Salesman(Employee):
         pass
 
     def add_superior(self) -> bool:
-        # Add superior of immediately higher rank.
-        # If superior doesn't exist return false,
+        try:
+            self.superior = self.positions_list[self.position + 1]# Add superior of immediately higher rank.
+            return True
+        except IndexError:
+            return False# If superior doesn't exist return false,
         pass
 
 
     def migrate_branch(self, new_code: int) -> bool:
-        # This should simply add a branch to the list; even different cities are fine
+        if new_code in super().branches: return False 
+        super().branches.append(new_code)# This should simply add a branch to the list; even different cities are fine
+        return True
         pass
 
     
