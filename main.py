@@ -15,23 +15,34 @@ if __name__ == "__main__":  # Equivalent to int main() {} in C++.
 
         if last_input == 1:
             name = input("Name:")
-            ID = input("ID:")
+            age = int(input("Age:"))
+            ID = int(input("ID:"))
             city = input("City:")
-            branchcodes = input("Branch(es):")
-            # How will you conver this to a list, given that
-            # the user will always enter a comma separated list of branch codes?
-            # eg>   2,5
-
-            salary = input("Salary: ")
+            branchcodes = [int(i) for i in input("Branch(es):").split(",")]
+            position = input("Position:")
+            salary = int(input("Salary: "))
             # Create a new Engineer with given details.
-            engineer = None  # Change this
+            engineer = Engineer(
+                name, age, ID, city, branchcodes, position, salary
+            )  # Change this
 
             engineer_roster.append(
                 engineer
             )  # Add him to the list! See people.py for definiton
 
         elif last_input == 2:
-            # Gather input to create a Salesperson
+            name = input("Name:")
+            age = int(input("Age:"))
+            ID = int(input("ID:"))
+            city = input("City:")
+            branchcodes = input("Branch(es):").split(",")
+            position = input("Position:")
+            salary = int(input("Salary:"))
+            superior = int(input("ID of Superior:"))
+            salesman = Salesman(
+                name, age, ID, city, branchcodes, position, salary, superior
+            )  # Gather input to create a Salesperson
+            sales_roster.append(salesman)
             # Then add them to the roster
             pass
 
@@ -54,13 +65,15 @@ if __name__ == "__main__":  # Equivalent to int main() {} in C++.
                 ## Write code here to list the branch names to
                 ## which the employee reports as a comma separated list
                 ## eg> Branches: Goregaon,Fort
-                branch_names = []
+                branches = [branchmap[n]["city"] for n in found_employee.branchcodes]
+
                 ## ???? what comes here??
-                # print(f"Branches: " + ???? )
+                print("Branches: ", *branches, sep=",")
 
                 print(f"Salary: {found_employee.salary}")
 
         elif last_input == 4:
+            ID = int(input("Enter Employee ID to migrate/change branch of: "))
             #### NO IF ELSE ZONE ######################################################
             # Change branch to new branch or add a new branch depending on class
             # Inheritance should automatically do this.
@@ -70,20 +83,51 @@ if __name__ == "__main__":  # Equivalent to int main() {} in C++.
 
         elif last_input == 5:
             ID = int(input("Enter Employee ID to promote: "))
+            found_employee = next(
+                (emp for emp in sales_roster + engineer_roster if emp.ID == ID), None
+            )
+
+            if not found_employee:
+                print("Employee not Found")
+            else:
+                found_employee.promote()
             # promote employee to next position
 
         elif last_input == 6:
             ID = int(input("Enter Employee ID to give increment: "))
+            amt = int(input("Enter salary increment amount: "))
+            found_employee = next(
+                (emp for emp in sales_roster + engineer_roster if emp.ID == ID), None
+            )
+
+            if not found_employee:
+                print("Employee not Found")
+            else:
+                found_employee.increment(amt)
             # Increment salary of employee.
 
         elif last_input == 7:
             ID = int(input("Enter Employee ID to find superior: "))
+            found_employee = next(
+                (emp for emp in sales_roster if emp.ID == ID), None
+            )
+            if not found_employee:
+                print("Employee not Found")
+            else:
+                print("Superior ID:" ,found_employee.superior)
             # Print superior of the sales employee.
 
         elif last_input == 8:
             ID_E = int(input("Enter Employee ID to add superior: "))
             ID_S = int(input("Enter Employee ID of superior: "))
             # Add superior of a sales employee
+            found_employee = next(
+                (emp for emp in sales_roster if emp.ID == ID_E), None
+            )
 
+            if not found_employee:
+                print("Employee not Found")
+            else:
+                found_employee.add_superior(ID_S)
         else:
             raise ValueError("No such query number defined")

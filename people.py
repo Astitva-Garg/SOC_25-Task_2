@@ -1,4 +1,5 @@
 import random
+
 """
 We'll try to understand classes in python.
 Check the resources on google classroom to ensure you have gone through everything expected.
@@ -91,13 +92,16 @@ class Engineer(Employee):
     def promote(self, position: str) -> bool:
         if position not in self.positions_list:
             return False  # Return false for a demotion or an invalid promotion
-        if self.positions_list.index(position) <= self.positions_list.index(self.position):
+        if self.positions_list.index(position) <= self.positions_list.index(
+            self.position
+        ):
             return False  # Promotion can only be to a higher position and
         self.increment(
             (3 * super().salary) // 10
         )  # it should call the increment function with 30% of the present salary
         return True  # as "amt". Thereafter return True.
         pass
+
 
 class Salesman(Employee):
     """
@@ -144,7 +148,9 @@ class Salesman(Employee):
     def promote(self, position: str) -> bool:
         if position not in self.positions_list:
             return False  # Return false for a demotion or an invalid promotion
-        if self.positions_list.index(position) <= self.positions_list.index(self.position):
+        if self.positions_list.index(position) <= self.positions_list.index(
+            self.position
+        ):
             return False  # Promotion can only be to a higher position and
         self.increment(
             (3 * super().salary) // 10
@@ -154,9 +160,16 @@ class Salesman(Employee):
 
     # def increment
 
-    def find_superior(self) -> tuple[int, str]:
-        superior_found=next((employee for employee in sales_roster if employee.ID == self.superior),None)
-        return superior_found.ID, superior_found.name if superior_found is not None else None, None
+    def find_superior(self):
+        superior_found = next(
+            (employee for employee in sales_roster if employee.ID == self.superior),
+            None,
+        )
+        return (
+            (superior_found.ID, superior_found.name)
+            if superior_found is not None
+            else (None, None)
+        )
         # Return the employee ID and name of the superior
         # Report a tuple of None, None if no superior.
         pass
@@ -165,18 +178,21 @@ class Salesman(Employee):
         try:
             superior_position = self.positions_list[
                 self.positions_list.index(self.position) + 1
-            ]  # Add superior of immediately higher rank.    
+            ]  # Add superior of immediately higher rank.
         except IndexError:
             return False  # If superior doesn't exist return false,
         else:
-            self.superior = random.choice([person for person in sales_roster if person.position == superior_position]).ID # taking a random choice of a person in sales roster whose position is just ahead self
+            self.superior = random.choice(
+                [
+                    person
+                    for person in sales_roster
+                    if person.position == superior_position
+                ]
+            ).ID  # taking a random choice of a person in sales roster whose position is just ahead self
             return True
 
     def migrate_branch(self, new_code: int) -> bool:
         if new_code in super().branches:
             return False
-        super().branches.append(
-            new_code
-        )  # This should simply add a branch to the list; even different cities are fine
+        super().branches[0] = new_code # This should simply add a branch to the list; even different cities are fine
         return True
-        pass
