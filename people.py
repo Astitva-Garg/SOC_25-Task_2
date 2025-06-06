@@ -194,5 +194,7 @@ class Salesman(Employee):
     def migrate_branch(self, new_code: int) -> bool:
         if new_code in super().branches:
             return False
-        super().branches[0] = new_code # This should simply add a branch to the list; even different cities are fine
+        super().branches.append(
+            new_code
+        )  # This should simply add a branch to the list; even different cities are fine
         return True

@@ -74,6 +74,15 @@ if __name__ == "__main__":  # Equivalent to int main() {} in C++.
 
         elif last_input == 4:
             ID = int(input("Enter Employee ID to migrate/change branch of: "))
+            branchcode = int(input("Enter Branchcode to migrate/add Employee to"))
+            found_employee = next(
+                (emp for emp in sales_roster + engineer_roster if emp.ID == ID), None
+            )
+
+            if not found_employee:
+                print("Employee not Found")
+            else:
+                found_employee.migrate_branch(branchcode)
             #### NO IF ELSE ZONE ######################################################
             # Change branch to new branch or add a new branch depending on class
             # Inheritance should automatically do this.
